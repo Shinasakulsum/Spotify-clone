@@ -1,10 +1,35 @@
-
-import React from 'react'
+import React, { useContext } from 'react'
+import Sidebaar from './components/Sidebaar'
+import Navbar from './components/Navbar'
+import Player from './components/Player'
+import Display from './components/Display'
+import { PlayerContext } from './context/PlayerContext'
+import { Route, Router, Routes } from 'react-router-dom'
+import LoginForm from './components/LoginForm'
 
 function App() {
+
+  const { audioRef, track, songData } = useContext(PlayerContext);
+
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-blue-600">Spotify Clone Initialize soon..</h1>
+    <div className="h-screen bg-black">
+      {
+        songData.length !== 0 ?
+          <>
+            <Navbar />
+            <div className='h-[95%] flex'>
+              <Sidebaar />
+              <Display />
+            </div>
+            <Player />
+          </>
+          : null
+      }
+
+      <audio ref={audioRef} src={track?track.file:""} preload='auto'></audio>
+      <Routes>
+        <Route path='/login' element={<LoginForm />} />
+      </Routes>
     </div>
   )
 }

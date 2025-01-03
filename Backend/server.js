@@ -1,27 +1,36 @@
 import express from 'express';
-const app = express();
-import userRoutes from './Routes/user.js';
 import cors from 'cors';
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
+import songRouter from './src/routes/songRouter.js';
+import connectDB from './src/config/db.js';
+import connectCloudinary from './src/config/cloudinary.js';
+import albumRouter from './src/routes/albumRouter.js';
+import userRouter from './src/routes/userRouter.js';
+import protectedRouter from './src/routes/protectedRouter.js';
 
-const PORT = process.env.PORT || 5000;
+// import  jwt  from 'jsonwebtoken';
 
-import './db.js';
+//app config
+
+const app = express();
+const port = process.env.PORT || 4000;
+
+connectDB();
+connectCloudinary();
+//middleware
 
 app.use(express.json());
 app.use(cors());
-app.use("/api/user", userRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+//initializing routes
+app.use('/api/users', userRouter);
+app.use('/api/protected', protectedRouter);
+app.use("/api/song",songRouter);
+app.use('/api/album',albumRouter);
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-  })
 
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught exception:', error);
-  process.exit(1);
-});
+app.get('/',(req, res) => {
+  res.send('API is working...');
+})
+
+app.listen(port,()=> console.log(`Server started on http://localhost:${port}`))
