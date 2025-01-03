@@ -1,0 +1,1 @@
+This project is a Spotify clone built using modern web development technologies. It allows users to stream music, browse playlists, and enjoy a Spotify-like experience. The project mimics the core features and functionality of Spotify, providing a fully interactive and visually appealing user interface
