@@ -1,17 +1,33 @@
 import { v2 as cloudinary } from "cloudinary";
 import songModel from "../models/songModel.js";
 import multer from "multer";
+import fs from 'fs';
+import path from 'path';
 
 const upload = multer({ dest: 'uploads/' });
+
+const convertDurationToSeconds = (duration) => {
+    const minutes = Math.floor(duration / 60); 
+    const seconds = Math.floor(duration % 60);
+    return minutes * 60 + seconds;
+};
+
+const removeLocalFile = (filePath) => {
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Failed to remove local file:', err);
+        } else {
+            console.log(`Successfully removed file: ${filePath}`);
+        }
+    });
+};
+
 
 const addSong = async (req, res) => {
     try {
         console.log('addSong function called');
-        const name = req.body.name;
-        const desc = req.body.desc;
-        const album = req.body.album;
+        const { name, desc, album } = req.body;
         console.log('Request body:', req.body);
-        console.log(name, desc, album);
 
         if (!req.files || !req.files.audio || !req.files.image) {
             console.log('Files are missing in the request');
@@ -22,12 +38,18 @@ const addSong = async (req, res) => {
         const imageFile = req.files.image[0];
         console.log('Audio file:', audioFile);
         console.log('Image file:', imageFile);
+
+        // Upload files to Cloudinary
         const audioUpload = await cloudinary.uploader.upload(audioFile.path, { resource_type: "video" });
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
-        const duration = `${Math.floor(audioUpload.duration / 60)}:${Math.floor(audioUpload.duration % 60)}`;
 
-        console.log('Upload results:', audioUpload, imageUpload);
-        console.log(name, desc, album, audioUpload, imageUpload);
+        if (!audioUpload || !imageUpload) {
+            throw new Error('Cloudinary upload failed');
+        }
+        
+
+        // Duration calculation: Convert duration from Cloudinary (in seconds)
+        const durationInSeconds = convertDurationToSeconds(audioUpload.duration);
 
         const songData = {
             name,
@@ -35,19 +57,28 @@ const addSong = async (req, res) => {
             album,
             audioUrl: audioUpload.secure_url,
             imageUrl: imageUpload.secure_url,
-            duration
+            duration: durationInSeconds // Store the duration in seconds
         };
 
-        const song = songModel(songData);
-        await song.save();
-        res.json({ success: true, message: "Song Added", song: songData });
+        // Log the songData before saving
+        console.log('Song data to save:', songData);
 
+        const song = await songModel.create(songData);
 
+        // Clean up local files
+        removeLocalFile(audioFile.path);
+        removeLocalFile(imageFile.path);
+
+        // Respond with the saved song data
+        res.status(201).json({ success: true, message: "Song Added", song });
     } catch (error) {
         console.error('Error in addSong:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        console.error(error.stack);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
-}
+};
+
+
 
 const listSong = async (req, res) => {
     try {

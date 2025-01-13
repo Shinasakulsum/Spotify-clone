@@ -4,10 +4,11 @@ import { use } from 'react';
 import { PiMusicNotesPlusFill } from "react-icons/pi"
 import { url } from '../App';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddAlbum = () => {
 
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
   const [color, setColor] = useState('#121212');
   const [name, setName] = useState("");
   const [desc, setDesc] = useState('');
@@ -18,7 +19,7 @@ const AddAlbum = () => {
     setLoading(true);
 
     try {
-      const formData = new formData();
+      const formData = new FormData();
       formData.append('name',name);
       formData.append('desc',desc);
       formData.append('image',image);
@@ -29,13 +30,14 @@ const AddAlbum = () => {
       if (res.data.success){
         toast.success("Album Added");
         setDesc("");
-        setImage(false);
+        setImage(null);
         setName("");
       }else{
         toast.error("Something went wrong")
       }
     } catch (error) {
-      toast.error("Error Occured");
+      console.error('Error occurred:', error.response ? error.response.data : error.message);
+      toast.error("Error occurred: " + (error.response ? error.response.data.message : error.message));
     }
     setLoading(false)
   }

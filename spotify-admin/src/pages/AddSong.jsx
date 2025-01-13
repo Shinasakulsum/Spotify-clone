@@ -8,13 +8,13 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const AddSong = () => {
 
-  const [ image, setImage ] = useState(null);
-  const [ song, setSong ] = useState(null);
-  const [ name, setName ] = useState('');
-  const [ desc, setDesc ] = useState('');
-  const [ album, setAlbum ] = useState('');
-  const [ loading, setLoading ] = useState(false);
-  const [ albumData, setAlbumData ] = useState([]);
+  const [image, setImage] = useState(null);
+  const [song, setSong] = useState(null);
+  const [name, setName] = useState('');
+  const [desc, setDesc] = useState('');
+  const [album, setAlbum] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [albumData, setAlbumData] = useState([]);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ const AddSong = () => {
 
       const response = await axios.post(`${url}/api/song/add`, formData);
 
-      if(response.status === 200){
+      if (response.status === 200) {
         toast.success('Song Added Successfully');
         setName('');
         setDesc('');
@@ -48,13 +48,13 @@ const AddSong = () => {
     setLoading(false);
   }
 
-  const loadAlbumData = async ()=> {
+  const loadAlbumData = async () => {
     try {
       const res = await axios.get(`${url}/api/album/list`);
-      if(res.data.success){
+      if (res.data.success) {
         setAlbumData(res.data.albums);
       }
-      else{
+      else {
         toast.error("Unable to Load Album data")
       }
 
@@ -63,7 +63,7 @@ const AddSong = () => {
     }
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     loadAlbumData();
   })
 
@@ -91,7 +91,7 @@ const AddSong = () => {
           <label htmlFor="image">
             {
               image ? (
-                <img src={URL.createObjectURL(image)} alt="" className='w-24 h-24 object-cover'/>
+                <img src={URL.createObjectURL(image)} alt="" className='w-24 h-24 object-cover' />
               ) : (
                 <RiImageAddLine className='w-24 cursor-pointer' />
               )
@@ -102,20 +102,22 @@ const AddSong = () => {
 
       <div className="flex flex-col gap-2.5">
         <p>Song Name</p>
-        <input onChange={(e)=> setName(e.target.value)} value={name} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' placeholder='Type Here' type="text" required />
+        <input onChange={(e) => setName(e.target.value)} value={name} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' placeholder='Type Here' type="text" required />
       </div>
 
       <div className="flex flex-col gap-2.5">
         <p>Song Description</p>
-        <input onChange={(e)=> setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' placeholder='Type Here' type="text" required />
+        <input onChange={(e) => setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' placeholder='Type Here' type="text" required />
       </div>
 
       <div className="flex flex-col gap-2.5">
         <p>Album</p>
-        <select onChange={(e)=>setAlbum(e.target.value)} defaultValue={album} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]'>
+        <select onChange={(e) => setAlbum(e.target.value)} defaultValue={album} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]'>
           <option value="none">None</option>
           {
-            albumData.map((item,index)=>{<option key={index} value={item.name}>{item.name}</option>})
+            albumData.map((item, index) => {
+              return <option key={index} value={item.name}>{item.name}</option>
+            })
           }
         </select>
       </div>

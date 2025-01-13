@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { assets, } from '../assets/assests'
+// import { assets, } from '../assets/assests'
 import { IoShuffle } from "react-icons/io5";
 import { MdSkipPrevious, MdSkipNext, MdOutlineZoomOutMap } from "react-icons/md";
 import { RxLoop } from "react-icons/rx";
@@ -13,7 +13,7 @@ const Player = () => {
   return track ? (
     <div className='fixed bottom-0 left-0 right-0 h-[10%] bg-black flex justify-between items-center text-white px-4'>
       <div className='hidded lg:flex items-center gap-4'>
-        <img className='w-12' src={track.image} alt="" />
+        <img className='w-12' src={track.imageUrl} alt="" />
         <div>
           <p>{track.name}</p>
           <p>{track.desc.slice(0, 12)}</p>

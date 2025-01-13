@@ -11,7 +11,7 @@ const Sidebaar = () => {
 
     return (
         <div className='w-[20%] h-full p-2 flex-col gap-2 text-white hidden lg:flex'>
-            <div className='bg-[#121212] h-[90%] rounded'>
+            <div className='bg-[#121212] h-[96%] rounded'>
                 <div className='p-4 flex items-center justify-between'>
                     <div className='flex items-center mt-14 text-zinc-300 gap-3 hover:text-white'>
                         <lord-icon

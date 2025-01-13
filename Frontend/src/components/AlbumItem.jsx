@@ -1,6 +1,6 @@
 import React from 'react';
 import img4 from '../assets/white_logo.png';
-import { use } from 'react';
+// import { use } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function AlbumItem({ image, name, desc, id }) {

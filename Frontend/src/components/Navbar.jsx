@@ -28,7 +28,7 @@ const Navbar = () => {
                 />
             </div>
             <div className='flex items-center justify-center w-full relative space-x-4'>
-                <div onClick={()=> navigate('/')} className='flex items-center rounded-full p-2 bg-[#121212] '>
+                <div onClick={() => navigate('/')} className='flex items-center rounded-full p-2 bg-[#121212] '>
                     <lord-icon
                         src="https://cdn.lordicon.com/wmwqvixz.json"
                         trigger="hover"
@@ -56,10 +56,10 @@ const Navbar = () => {
                 </div>
             </div>
             <div className='flex items-center '>
-                <button className='text-zinc-200 px-7 py-3 font-bold rounded-full mr-4 hover:text-white hover:text-lg'>
+                <button onClick={() => navigate('/register')} className='text-zinc-200 px-7 py-3 font-bold rounded-full mr-4 hover:text-white hover:text-lg'>
                     SignUp
                 </button>
-                <button className='bg-white text-black px-7 py-3 font-bold rounded-full hover:text-black hover:text-lg'>
+                <button onClick={() => navigate('/login')} className='bg-white text-black px-7 py-3 font-bold rounded-full hover:text-black hover:text-lg'>
                     Login
                 </button>
             </div>

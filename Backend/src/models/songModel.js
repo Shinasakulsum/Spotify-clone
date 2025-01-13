@@ -13,16 +13,16 @@ const songSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
+  imageUrl: {
     type: String, 
     required: true,
   },
-  file: {
+  audioUrl: {
     type: String, 
     required: true,
   },
   duration: {
-    type: Number,
+    type: String,
     required: true,
   },
 });
